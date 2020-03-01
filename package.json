@@ -1,0 +1,16 @@
+{
+  "name": "auth-app",
+  "version": "1.0.0",
+  "description": "a full stack Node.js Express + Vue.js Authentication example",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app",
+    "server": "nodemon app"
+  },
+  "author": "Leo Zeng",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.2"
+  }
+}
