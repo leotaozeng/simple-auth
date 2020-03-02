@@ -1,6 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 
+require('./src/database')
+
 const authRouter = require('./src/routes/auth')
 
 const app = express()

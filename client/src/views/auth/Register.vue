@@ -66,7 +66,14 @@ export default {
   },
   methods: {
     handleRegister() {
-      axios.post('http://localhost:3000/api/auth/register', this.form)
+      axios
+        .post('http://localhost:3000/api/auth/register', this.form)
+        .then(result => {
+          console.log(result)
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
     }
   }
 }
