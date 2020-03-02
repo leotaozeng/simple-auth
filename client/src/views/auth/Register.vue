@@ -1,26 +1,45 @@
 <template>
   <div class="card card-container">
     <!-- Avatar -->
-    <img id="avatar" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" class="profile-img-card" />
+    <img
+      id="avatar"
+      src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+      class="profile-img-card"
+    />
 
     <!-- Form -->
-    <form name="form" @submit.prevent="handleRegister">
+    <form autocomplete="off" @submit.prevent="handleRegister">
       <!-- Username -->
       <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" v-model="form.username" class="form-control" name="username" />
+        <input
+          id="username"
+          type="text"
+          v-model="form.username"
+          class="form-control"
+        />
       </div>
 
       <!-- Email -->
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" v-model="form.email" class="form-control" name="email" />
+        <input
+          id="email"
+          type="email"
+          v-model="form.email"
+          class="form-control"
+        />
       </div>
 
       <!-- Password -->
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" v-model="form.password" class="form-control" name="password" />
+        <input
+          id="password"
+          type="password"
+          v-model="form.password"
+          class="form-control"
+        />
       </div>
 
       <!-- Register Button -->
@@ -32,6 +51,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'Register',
   data() {
@@ -45,7 +66,7 @@ export default {
   },
   methods: {
     handleRegister() {
-      console.log(1)
+      axios.post('http://localhost:3000/api/auth/register', this.form)
     }
   }
 }

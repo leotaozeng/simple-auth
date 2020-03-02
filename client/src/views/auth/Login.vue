@@ -8,7 +8,7 @@
     />
 
     <!-- Form -->
-    <form name="form" autocomplete="off" @submit.prevent="handleLogin">
+    <form autocomplete="off" @submit.prevent="handleLogin">
       <!-- Username -->
       <div class="form-group">
         <label for="username">Username</label>
