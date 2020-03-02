@@ -42,9 +42,9 @@
         />
       </div>
 
-      <!-- Register Button -->
+      <!-- Create Button -->
       <div class="form-group">
-        <button class="btn btn-primary btn-block">Register</button>
+        <button class="btn btn-primary btn-block">Create</button>
       </div>
     </form>
   </div>

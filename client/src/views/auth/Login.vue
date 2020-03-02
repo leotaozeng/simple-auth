@@ -9,25 +9,14 @@
 
     <!-- Form -->
     <form autocomplete="off" @submit.prevent="handleLogin">
-      <!-- Username -->
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input
-          type="text"
-          v-model="form.username"
-          class="form-control"
-          name="username"
-        />
-      </div>
-
       <!-- Email -->
       <div class="form-group">
         <label for="email">Email</label>
         <input
+          id="email"
           type="email"
           v-model="form.email"
           class="form-control"
-          name="email"
         />
       </div>
 
@@ -35,10 +24,10 @@
       <div class="form-group">
         <label for="password">Password</label>
         <input
+          id="password"
           type="password"
           v-model="form.password"
           class="form-control"
-          name="password"
         />
       </div>
 
@@ -63,12 +52,13 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'Login',
   data() {
     return {
       form: {
-        username: '',
         email: '',
         password: ''
       },
@@ -78,7 +68,19 @@ export default {
   },
   methods: {
     handleLogin() {
-      console.log(1)
+      axios
+        .post('http://localhost:3000/api/auth/login', this.form)
+        .then(res => {
+          const { status, data } = res
+
+          if (status === 200) {
+            localStorage.setItem('token', data.token)
+            this.$router.push({ name: 'Home' })
+          }
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
     }
   }
 }
