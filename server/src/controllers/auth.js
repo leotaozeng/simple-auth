@@ -35,6 +35,7 @@ exports.login = (req, res) => {
 
   User.findOne({ email })
     .then(user => {
+      console.log(user)
       if (!user) {
         // 用户不存在
         res.status(400).json({

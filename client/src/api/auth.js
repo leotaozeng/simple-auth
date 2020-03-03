@@ -10,8 +10,4 @@ const login = data => {
   return httpClient.post(`${END_POINT}/login`, data)
 }
 
-const logout = () => {
-  localStorage.removeItem('user')
-}
-
-export { register, login, logout }
+export default { register, login }

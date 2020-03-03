@@ -52,9 +52,7 @@
 </template>
 
 <script>
-import { login } from '@/api/auth'
-
-const SUCCESS_OK = 200
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Login',
@@ -69,18 +67,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions('auth', ['login']),
     async handleLogin() {
-      try {
-        const res = await login(this.form)
-        const { status, data } = res
-
-        if (status === SUCCESS_OK) {
-          localStorage.setItem('token', data.token)
-          this.$router.push({ name: 'Home' })
-        }
-      } catch (err) {
-        console.log(err.response)
-      }
+      const result = await this.login(this.form)
+      console.log(result)
     }
   }
 }
