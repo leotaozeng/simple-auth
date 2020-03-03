@@ -51,7 +51,9 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { register } from '@/api/auth'
+
+const SUCCESS_OK = 200
 
 export default {
   name: 'Register',
@@ -65,15 +67,17 @@ export default {
     }
   },
   methods: {
-    handleRegister() {
-      axios
-        .post('http://localhost:3000/api/auth/register', this.form)
-        .then(result => {
-          console.log(result)
-        })
-        .catch(err => {
-          console.log(err.response)
-        })
+    async handleRegister() {
+      try {
+        const res = await register(this.form)
+        const { status } = res
+
+        if (status === SUCCESS_OK) {
+          this.$router.push({ name: 'Home' })
+        }
+      } catch (err) {
+        console.log(err.response)
+      }
     }
   }
 }

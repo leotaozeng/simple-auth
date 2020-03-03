@@ -52,7 +52,9 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { login } from '@/api/auth'
+
+const SUCCESS_OK = 200
 
 export default {
   name: 'Login',
@@ -67,20 +69,18 @@ export default {
     }
   },
   methods: {
-    handleLogin() {
-      axios
-        .post('http://localhost:3000/api/auth/login', this.form)
-        .then(res => {
-          const { status, data } = res
+    async handleLogin() {
+      try {
+        const res = await login(this.form)
+        const { status, data } = res
 
-          if (status === 200) {
-            localStorage.setItem('token', data.token)
-            this.$router.push({ name: 'Home' })
-          }
-        })
-        .catch(err => {
-          console.log(err.response)
-        })
+        if (status === SUCCESS_OK) {
+          localStorage.setItem('token', data.token)
+          this.$router.push({ name: 'Home' })
+        }
+      } catch (err) {
+        console.log(err.response)
+      }
     }
   }
 }
