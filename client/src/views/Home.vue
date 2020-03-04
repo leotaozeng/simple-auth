@@ -1,9 +1,7 @@
 <template>
-  <div class="container">
-    <header class="jumbotron">
-      <h3>{{ content }}</h3>
-    </header>
-  </div>
+  <header class="jumbotron">
+    <h3>{{ content }}</h3>
+  </header>
 </template>
 
 <script>

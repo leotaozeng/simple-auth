@@ -3,16 +3,19 @@ import auth from '@/api/auth'
 import httpClient from '@/api/httpClient'
 
 const SUCCESS_OK = 200
+const user = JSON.parse(localStorage.getItem('user'))
+const initialState = user
+  ? { status: { loggedIn: true }, user }
+  : { status: { loggedIn: false }, user: null }
 
 // initial state
-const state = {
-  user: null,
-  status: { loggedIn: false },
-  token: localStorage.getItem('token') || ''
-}
+const state = initialState
 
 // getters
-const getters = {}
+const getters = {
+  user: state => state.user,
+  loggedIn: state => state.status.loggedIn
+}
 
 // actions
 const actions = {
@@ -29,7 +32,7 @@ const actions = {
         })
 
         // 设置 token
-        localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify(data.user))
         httpClient.defaults.headers.common['Authorization'] = data.token
 
         return res

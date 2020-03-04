@@ -55,10 +55,15 @@ exports.login = (req, res) => {
             // 密码正确
             // 创建 JWT 字符串
             const token = jwt.sign({ userId: user._id }, 'secretkey')
-            return res.status(200).json({
+
+            res.status(200).json({
               title: 'success',
-              token,
-              user
+              user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                accessToken: token
+              }
             })
           }
         })
