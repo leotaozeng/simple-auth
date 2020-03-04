@@ -2,6 +2,7 @@
   <nav class="navbar navbar-expand navbar-dark bg-dark">
     <a href class="navbar-brand" @click.prevent>Authentication</a>
 
+    <!-- 导航菜单 -->
     <div class="navbar-nav mr-auto">
       <!-- Home -->
       <li class="nav-item">
@@ -11,6 +12,17 @@
         >
           <home-icon size="18" class="mr-1"></home-icon>
           <span>Home</span>
+        </router-link>
+      </li>
+
+      <!-- Secure -->
+      <li class="nav-item">
+        <router-link
+          :to="{ name: 'Secure' }"
+          class="nav-link d-flex align-items-center"
+        >
+          <shield-icon size="18" class="mr-1"></shield-icon>
+          <span>Secure</span>
         </router-link>
       </li>
 
@@ -92,7 +104,8 @@ import {
   UserIcon,
   UserPlusIcon,
   LogInIcon,
-  LogOutIcon
+  LogOutIcon,
+  ShieldIcon
 } from 'vue-feather-icons'
 
 export default {
@@ -101,7 +114,8 @@ export default {
     UserIcon,
     UserPlusIcon,
     LogInIcon,
-    LogOutIcon
+    LogOutIcon,
+    ShieldIcon
   },
   computed: {
     ...mapGetters('auth', {
