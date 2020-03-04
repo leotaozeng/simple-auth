@@ -18,9 +18,7 @@ const mutations = {
   },
 
   FINISH_LOADING(state) {
-    setTimeout(() => {
-      state.loading--
-    }, 1000)
+    state.loading--
   }
 }
 

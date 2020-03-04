@@ -5,7 +5,10 @@
     <div class="navbar-nav mr-auto">
       <!-- Home -->
       <li class="nav-item">
-        <router-link to="/home" class="nav-link d-flex align-items-center">
+        <router-link
+          :to="{ name: 'Home' }"
+          class="nav-link d-flex align-items-center"
+        >
           <home-icon size="18" class="mr-1"></home-icon>
           <span>Home</span>
         </router-link>
@@ -28,40 +31,54 @@
           to="/user"
           class="nav-link d-flex align-items-center"
         >
-          <user-icon size="18" class="mr-1"></user-icon>
-          <span>User</span>
+          User
         </router-link>
       </li>
     </div>
 
+    <!-- 已登录 -->
     <div v-if="currentUser" class="navbar-nav ml-auto">
       <!-- Porfile -->
       <li class="nav-item">
-        <router-link to="/profile" class="nav-link">
-          {{ currentUser.username }}
+        <router-link to="/profile" class="nav-link d-flex align-items-center">
+          <user-icon size="18" class="mr-1"></user-icon>
+          <span>{{ currentUser.username }}</span>
         </router-link>
       </li>
 
       <!-- Logout -->
       <li class="nav-item">
-        <a class="nav-link" href @click.prevent="logOut">
-          LogOut
+        <a
+          class="nav-link d-flex align-items-center"
+          @click.prevent="handleLogout"
+        >
+          <log-out-icon size="18" class="mr-1"></log-out-icon>
+          <span>Logout</span>
         </a>
       </li>
     </div>
 
+    <!-- 未登录 -->
     <div v-else class="navbar-nav ml-auto">
       <!-- Register -->
       <li class="nav-item">
-        <router-link to="/register" class="nav-link">
-          Register
+        <router-link
+          :to="{ name: 'Register' }"
+          class="nav-link d-flex align-items-center"
+        >
+          <user-plus-icon size="18" class="mr-1"></user-plus-icon>
+          <span>Register</span>
         </router-link>
       </li>
 
       <!-- Login -->
       <li class="nav-item">
-        <router-link to="/login" class="nav-link">
-          Login
+        <router-link
+          :to="{ name: 'Login' }"
+          class="nav-link d-flex align-items-center"
+        >
+          <log-in-icon size="18" class="mr-1"></log-in-icon>
+          <span>Login</span>
         </router-link>
       </li>
     </div>
@@ -69,13 +86,27 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { HomeIcon, UserIcon } from 'vue-feather-icons'
+import { mapGetters, mapActions } from 'vuex'
+import {
+  HomeIcon,
+  UserIcon,
+  UserPlusIcon,
+  LogInIcon,
+  LogOutIcon
+} from 'vue-feather-icons'
 
 export default {
   components: {
     HomeIcon,
-    UserIcon
+    UserIcon,
+    UserPlusIcon,
+    LogInIcon,
+    LogOutIcon
+  },
+  computed: {
+    ...mapGetters('auth', {
+      currentUser: 'user'
+    })
   },
   data() {
     return {
@@ -83,10 +114,13 @@ export default {
       showModeratorBoard: false
     }
   },
-  computed: {
-    ...mapGetters('auth', {
-      currentUser: 'user'
-    })
+  methods: {
+    ...mapActions('auth', ['logout']),
+    handleLogout() {
+      this.logout().then(() => {
+        this.$router.push('/login')
+      })
+    }
   }
 }
 </script>

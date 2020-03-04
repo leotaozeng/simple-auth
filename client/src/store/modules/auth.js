@@ -19,29 +19,40 @@ const getters = {
 
 // actions
 const actions = {
-  async login({ commit }, user) {
-    try {
-      const res = await auth.login(user)
-      const { status, data } = res
+  login({ commit }, user) {
+    return new Promise((resolve, reject) => {
+      auth
+        .login(user)
+        .then(res => {
+          const { status, data } = res
 
-      // 状态码是否等于 200
-      if (status === SUCCESS_OK) {
-        commit('AUTH_SUCCESS', {
-          user: data.user,
-          token: data.token
+          // 状态码是否等于 200
+          if (status === SUCCESS_OK) {
+            commit('AUTH_SUCCESS', {
+              user: data.user,
+              token: data.token
+            })
+
+            // 设置 token
+            localStorage.setItem('user', JSON.stringify(data.user))
+            httpClient.defaults.headers.common['Authorization'] = data.token
+
+            resolve(res)
+          }
         })
+        .catch(err => reject(err))
+    })
+  },
 
-        // 设置 token
-        localStorage.setItem('user', JSON.stringify(data.user))
-        httpClient.defaults.headers.common['Authorization'] = data.token
+  logout({ commit }) {
+    return new Promise(resolve => {
+      commit('LOGOUT')
 
-        return res
-      }
-    } catch (err) {
-      const { response: res } = err
+      localStorage.removeItem('user')
+      delete httpClient.defaults.headers.common['Authorization']
 
-      return res
-    }
+      resolve()
+    })
   },
 
   register() {}
@@ -59,9 +70,9 @@ const mutations = {
     state.status.loggedIn = false
   },
 
-  logout(state) {
+  LOGOUT(state) {
     state.status.loggedIn = false
-    state.token = ''
+    state.user = null
   }
 }
 

@@ -72,8 +72,12 @@ export default {
   methods: {
     ...mapActions('auth', ['login']),
     async handleLogin() {
-      const result = await this.login(this.form)
-      console.log(result)
+      try {
+        await this.login(this.form)
+        this.$router.push({ name: 'Home' })
+      } catch (err) {
+        console.log(err)
+      }
     }
   },
   created() {
