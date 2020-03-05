@@ -1,6 +1,5 @@
 // import the API endpoints
 import auth from '@/api/auth'
-import httpClient from '@/api/httpClient'
 
 const SUCCESS_OK = 200
 const user = JSON.parse(localStorage.getItem('user'))
@@ -25,21 +24,13 @@ const actions = {
         .register(user)
         .then(res => {
           const { status, data } = res
-          const newUser = {
-            role: data.role,
-            username: data.username,
-            email: data.email,
-            accessToken: data.accessToken
-          }
 
           // 状态码是否等于 200
           if (status === SUCCESS_OK) {
-            commit('AUTH_SUCCESS', newUser)
+            commit('AUTH_SUCCESS', data)
 
             // 存储用户信息
-            localStorage.setItem('user', JSON.stringify(newUser))
-            httpClient.defaults.headers.common['Authorization'] =
-              data.accessToken
+            localStorage.setItem('user', JSON.stringify(data))
 
             resolve(res)
           }
@@ -54,21 +45,13 @@ const actions = {
         .login(user)
         .then(res => {
           const { status, data } = res
-          const newUser = {
-            role: data.role,
-            username: data.username,
-            email: data.email,
-            accessToken: data.accessToken
-          }
 
           // 状态码是否等于 200
           if (status === SUCCESS_OK) {
-            commit('AUTH_SUCCESS', newUser)
+            commit('AUTH_SUCCESS', data)
 
             // 存储用户信息
-            localStorage.setItem('user', JSON.stringify(newUser))
-            httpClient.defaults.headers.common['Authorization'] =
-              data.accessToken
+            localStorage.setItem('user', JSON.stringify(data))
 
             resolve(res)
           }
@@ -82,7 +65,6 @@ const actions = {
       commit('LOGOUT')
 
       localStorage.removeItem('user')
-      delete httpClient.defaults.headers.common['Authorization']
 
       resolve()
     })

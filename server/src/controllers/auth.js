@@ -33,7 +33,10 @@ exports.register = async (req, res) => {
     const hashedPassword = await hashPassword(data.password)
 
     const user = new User({ ...data, password: hashedPassword })
-    const accessToken = jwt.sign({ userId: user._id }, SECRET)
+    const accessToken = jwt.sign({ userId: user._id }, SECRET, {
+      // 7天后过期
+      expiresIn: '7d'
+    })
 
     await validateUsername(data.username)
     await validateEmail(data.email)
@@ -43,7 +46,8 @@ exports.register = async (req, res) => {
       role: user.role,
       username: data.username,
       email: data.email,
-      accessToken
+      accessToken,
+      expiresIn: 168
     })
   } catch (error) {
     res.status(400).json({
@@ -62,7 +66,7 @@ exports.login = async (req, res) => {
 
     if (!user) {
       // 用户不存在
-      res.status(400).json({
+      res.status(404).json({
         message: 'Email does not exist'
       })
     } else {
@@ -76,12 +80,18 @@ exports.login = async (req, res) => {
         })
       } else {
         // 密码正确
-        const accessToken = jwt.sign({ userId: user._id }, SECRET)
+
+        const accessToken = jwt.sign({ userId: user._id }, SECRET, {
+          // 7天后过期
+          expiresIn: '7d'
+        })
+
         res.status(200).json({
           role: user.role,
           username: user.username,
           email,
-          accessToken
+          accessToken,
+          expiresIn: 168
         })
       }
     }
