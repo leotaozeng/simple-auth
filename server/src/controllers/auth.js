@@ -1,82 +1,93 @@
 const User = require('../models/user')
-
+const { SECRET } = require('../config/auth')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
-exports.register = (req, res) => {
-  const user = new User(req.body)
-
-  bcrypt.genSalt(saltRounds, (err, salt) => {
-    if (err) throw err
-    bcrypt.hash(user.password, salt, (err, hash) => {
-      if (err) throw err
-
-      user.password = hash
-      user
-        .save()
-        .then(() => {
-          res.status(200).json({
-            title: 'success'
-          })
-        })
-        .catch(() => {
-          res.status(400).json({
-            title: 'error',
-            message: 'email in use'
-          })
-        })
-    })
-  })
+// 校验用户名是否存在
+const validateUsername = username => {
+  User.findOne({ username })
 }
 
-exports.login = (req, res) => {
-  const { email, password } = req.body
-
+// 校验邮箱是否存在
+const validateEmail = email => {
   User.findOne({ email })
-    .then(user => {
-      console.log(user)
-      if (!user) {
-        // 用户不存在
+}
+
+// 校验密码是否正确
+const validatePassword = (plainPassword, hashedPassword) => {
+  return bcrypt.compare(plainPassword, hashedPassword)
+}
+
+// 哈希加密
+const hashPassword = password => {
+  return bcrypt.hash(password, saltRounds)
+}
+
+/**
+ * @desc 用户注册
+ */
+exports.register = async (req, res) => {
+  try {
+    const data = req.body
+    const hashedPassword = await hashPassword(data.password)
+
+    const user = new User({ ...data, password: hashedPassword })
+    const accessToken = jwt.sign({ userId: user._id }, SECRET)
+
+    await validateUsername(data.username)
+    await validateEmail(data.email)
+    await user.save()
+
+    res.status(200).json({
+      role: user.role,
+      username: data.username,
+      email: data.email,
+      accessToken
+    })
+  } catch (error) {
+    res.status(400).json({
+      message: 'Username or email has been taken'
+    })
+  }
+}
+
+/**
+ * @desc 用户登录
+ */
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body
+    const user = await User.findOne({ email })
+
+    if (!user) {
+      // 用户不存在
+      res.status(400).json({
+        message: 'Email does not exist'
+      })
+    } else {
+      // 用户存在
+      const validPassword = await validatePassword(password, user.password)
+
+      if (!validPassword) {
+        // 密码错误
         res.status(400).json({
-          title: 'error',
-          message: 'wrong email'
+          message: 'Password is not correct'
         })
       } else {
-        // 用户存在，匹配密码是否相等
-        bcrypt.compare(password, user.password, (err, result) => {
-          if (!result) {
-            // 密码错误
-            res.status(400).json({
-              title: 'login failed',
-              message: 'wrong password'
-            })
-          } else {
-            // 密码正确
-            // 创建 JWT 字符串
-            const token = jwt.sign({ userId: user._id }, 'secretkey')
-
-            res.status(200).json({
-              title: 'success',
-              user: {
-                id: user._id,
-                username: user.username,
-                email: user.email,
-                accessToken: token
-              }
-            })
-          }
+        // 密码正确
+        const accessToken = jwt.sign({ userId: user._id }, SECRET)
+        res.status(200).json({
+          role: user.role,
+          username: user.username,
+          email,
+          accessToken
         })
       }
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server error'
     })
-    .catch(err => {
-      res.status(500).json({
-        title: 'server error',
-        message: err
-      })
-    })
-}
-
-exports.logout = (req, res) => {
-  console.log(req.body)
+  }
 }

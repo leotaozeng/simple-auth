@@ -28,19 +28,19 @@
 
       <!-- Admin Board -->
       <li v-if="showAdminBoard" class="nav-item">
-        <router-link to="/admin" class="nav-link">Admin Board</router-link>
+        <router-link to="/admin" class="nav-link">Admin</router-link>
       </li>
 
       <!-- Moderator Board -->
       <li v-if="showModeratorBoard" class="nav-item">
-        <router-link to="/mod" class="nav-link">Moderator Board</router-link>
+        <router-link to="/mod" class="nav-link">Moderator</router-link>
       </li>
 
       <!-- User -->
       <li class="nav-item">
         <router-link
           v-if="currentUser"
-          to="/user"
+          :to="{ name: 'User' }"
           class="nav-link d-flex align-items-center"
         >
           User
@@ -52,7 +52,10 @@
     <div v-if="currentUser" class="navbar-nav ml-auto">
       <!-- Porfile -->
       <li class="nav-item">
-        <router-link to="/profile" class="nav-link d-flex align-items-center">
+        <router-link
+          :to="{ name: 'Profile', params: { username: currentUser.username } }"
+          class="nav-link d-flex align-items-center"
+        >
           <user-icon size="18" class="mr-1"></user-icon>
           <span>{{ currentUser.username }}</span>
         </router-link>

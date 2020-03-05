@@ -33,13 +33,7 @@
 
       <!-- Login Button -->
       <div class="form-group">
-        <button class="btn btn-primary btn-block" :disabled="loading">
-          <span
-            v-show="loading"
-            class="spinner-border spinner-border-sm"
-          ></span>
-          <span>Login</span>
-        </button>
+        <button class="btn btn-primary btn-block">Login</button>
       </div>
 
       <div class="form-group">
@@ -65,7 +59,6 @@ export default {
         email: '',
         password: ''
       },
-      loading: false,
       message: ''
     }
   },

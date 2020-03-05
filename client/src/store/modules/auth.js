@@ -19,23 +19,56 @@ const getters = {
 
 // actions
 const actions = {
+  register({ commit }, user) {
+    return new Promise((resolve, reject) => {
+      auth
+        .register(user)
+        .then(res => {
+          const { status, data } = res
+          const newUser = {
+            role: data.role,
+            username: data.username,
+            email: data.email,
+            accessToken: data.accessToken
+          }
+
+          // 状态码是否等于 200
+          if (status === SUCCESS_OK) {
+            commit('AUTH_SUCCESS', newUser)
+
+            // 存储用户信息
+            localStorage.setItem('user', JSON.stringify(newUser))
+            httpClient.defaults.headers.common['Authorization'] =
+              data.accessToken
+
+            resolve(res)
+          }
+        })
+        .catch(err => reject(err))
+    })
+  },
+
   login({ commit }, user) {
     return new Promise((resolve, reject) => {
       auth
         .login(user)
         .then(res => {
           const { status, data } = res
+          const newUser = {
+            role: data.role,
+            username: data.username,
+            email: data.email,
+            accessToken: data.accessToken
+          }
 
           // 状态码是否等于 200
           if (status === SUCCESS_OK) {
-            commit('AUTH_SUCCESS', {
-              user: data.user,
-              token: data.token
-            })
+            commit('AUTH_SUCCESS', newUser)
 
-            // 设置 token
-            localStorage.setItem('user', JSON.stringify(data.user))
-            httpClient.defaults.headers.common['Authorization'] = data.token
+            // 存储用户信息
+            localStorage.setItem('user', JSON.stringify(newUser))
+            httpClient.defaults.headers.common['Authorization'] =
+              data.accessToken
 
             resolve(res)
           }
@@ -53,17 +86,14 @@ const actions = {
 
       resolve()
     })
-  },
-
-  register() {}
+  }
 }
 
 // mutations
 const mutations = {
-  AUTH_SUCCESS(state, payload) {
+  AUTH_SUCCESS(state, user) {
     state.status.loggedIn = true
-    state.user = payload.user
-    state.token = payload.token
+    state.user = user
   },
 
   AUTH_ERROR(state) {

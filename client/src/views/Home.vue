@@ -18,7 +18,7 @@ export default {
   },
   created() {
     axios
-      .get('http://localhost:3000/api/user/all')
+      .get('http://localhost:3000')
       .then(res => {
         const { status, data } = res
 

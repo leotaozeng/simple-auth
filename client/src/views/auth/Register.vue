@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'Register',
   data() {
@@ -63,16 +65,14 @@ export default {
     }
   },
   methods: {
-    handleRegister() {
-      // try {
-      //   const res = await register(this.form)
-      //   const { status } = res
-      //   if (status === SUCCESS_OK) {
-      //     this.$router.push({ name: 'Home' })
-      //   }
-      // } catch (err) {
-      //   console.log(err.response)
-      // }
+    ...mapActions('auth', ['register']),
+    async handleRegister() {
+      try {
+        await this.register(this.form)
+        this.$router.push({ name: 'Home' })
+      } catch (err) {
+        console.log(err.response)
+      }
     }
   }
 }
