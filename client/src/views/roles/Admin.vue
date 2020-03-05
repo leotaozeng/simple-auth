@@ -1,9 +1,21 @@
 <template>
-  <div>Admin</div>
+  <header class="jumbotron">
+    <h3>{{ content }}</h3>
+  </header>
 </template>
 
 <script>
-export default {}
-</script>
+import roles from '@/api/roles'
 
-<style></style>
+export default {
+  name: 'Admin',
+  data() {
+    return {
+      content: 'Admin'
+    }
+  },
+  created() {
+    roles.getAdminContent()
+  }
+}
+</script>

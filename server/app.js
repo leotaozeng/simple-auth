@@ -6,13 +6,16 @@ const app = express()
 
 require('./src/database')
 
-// Middleware
 app.use(cors())
+
+// parse requests of content-type - application/json
 app.use(express.json())
+
+// Parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }))
 
 // Router Middleware
-app.use(require('./src/routes'))
+app.use('/api', require('./src/routes'))
 app.use('/api/auth', require('./src/routes/auth'))
 app.use('/api/roles', require('./src/routes/roles'))
 

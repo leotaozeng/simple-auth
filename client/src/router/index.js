@@ -6,9 +6,9 @@ import Login from '@/views/auth/Login'
 import Register from '@/views/auth/Register'
 import Secure from '@/views/Secure'
 import Profile from '@/views/Profile'
-import User from '@/views/board/User'
-import Admin from '@/views/board/Admin'
-import Moderator from '@/views/board/Moderator'
+import User from '@/views/roles/User'
+import Admin from '@/views/roles/Admin'
+import Moderator from '@/views/roles/Moderator'
 
 Vue.use(VueRouter)
 

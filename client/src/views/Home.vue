@@ -5,9 +5,7 @@
 </template>
 
 <script>
-import axios from 'axios'
-
-const SUCCESS_OK = 200
+import { getPublicContent } from '@/api'
 
 export default {
   name: 'Home',
@@ -16,19 +14,13 @@ export default {
       content: ''
     }
   },
-  created() {
-    axios
-      .get('http://localhost:3000')
-      .then(res => {
-        const { status, data } = res
-
-        if (status === SUCCESS_OK) {
-          this.content = data
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
+  async created() {
+    try {
+      const res = await getPublicContent()
+      this.content = res.data
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 </script>
