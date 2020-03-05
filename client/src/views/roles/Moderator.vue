@@ -1,9 +1,26 @@
 <template>
-  <div>Moderator</div>
+  <header class="jumbotron">
+    <h3>{{ content }}</h3>
+  </header>
 </template>
 
 <script>
-export default {}
-</script>
+import roles from '@/api/roles'
 
-<style></style>
+export default {
+  name: 'Moderator',
+  data() {
+    return {
+      content: ''
+    }
+  },
+  async created() {
+    try {
+      const res = await roles.getModeratorContent()
+      this.content = res.data
+    } catch (error) {
+      this.$router.push({ name: 'Home' })
+    }
+  }
+}
+</script>

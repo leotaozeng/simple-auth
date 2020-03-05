@@ -1,18 +1,8 @@
-const User = require('../models/user')
-const { SECRET } = require('../config/auth')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
-
-// 校验用户名是否存在
-const validateUsername = username => {
-  User.findOne({ username })
-}
-
-// 校验邮箱是否存在
-const validateEmail = email => {
-  User.findOne({ email })
-}
+const User = require('../models/user')
+const { SECRET } = require('../config/auth')
 
 // 校验密码是否正确
 const validatePassword = (plainPassword, hashedPassword) => {
@@ -39,8 +29,6 @@ exports.register = async (req, res) => {
       { expiresIn: '7d' }
     )
 
-    await validateUsername(data.username)
-    await validateEmail(data.email)
     await user.save()
 
     res.status(200).json({

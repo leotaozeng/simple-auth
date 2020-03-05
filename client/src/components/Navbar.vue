@@ -123,12 +123,20 @@ export default {
   computed: {
     ...mapGetters('auth', {
       currentUser: 'user'
-    })
-  },
-  data() {
-    return {
-      showAdminBoard: false,
-      showModeratorBoard: false
+    }),
+    showAdminBoard() {
+      if (this.currentUser) {
+        return this.currentUser.role.includes('admin')
+      }
+
+      return false
+    },
+    showModeratorBoard() {
+      if (this.currentUser) {
+        return this.currentUser.role.includes('moderator')
+      }
+
+      return false
     }
   },
   methods: {

@@ -11,11 +11,16 @@ export default {
   name: 'Admin',
   data() {
     return {
-      content: 'Admin'
+      content: ''
     }
   },
-  created() {
-    roles.getAdminContent()
+  async created() {
+    try {
+      const res = await roles.getAdminContent()
+      this.content = res.data
+    } catch (error) {
+      this.$router.push({ name: 'Home' })
+    }
   }
 }
 </script>

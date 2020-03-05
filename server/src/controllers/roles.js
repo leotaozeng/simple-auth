@@ -1,5 +1,5 @@
 exports.getUserContent = (req, res) => {
-  res.status(200).send(`Current User ID: ${req.userId}`)
+  res.status(200).send(`User content`)
 }
 
 exports.getModeratorContent = (req, res) => {
