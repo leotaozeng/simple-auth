@@ -46,13 +46,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Login',
-  computed: {
-    ...mapGetters('auth', ['loggedIn'])
-  },
   data() {
     return {
       form: {
@@ -71,11 +68,6 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    }
-  },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push({ name: 'Home' })
     }
   }
 }

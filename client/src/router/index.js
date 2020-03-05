@@ -27,12 +27,18 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {
+      requiresGuest: true
+    }
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: Register,
+    meta: {
+      requiresGuest: true
+    }
   },
   {
     path: '/secure',
@@ -83,18 +89,19 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    const loggedIn = store.getters['auth/loggedIn']
+  const loggedIn = store.getters['auth/loggedIn']
 
+  if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!loggedIn) {
       // 用户未登录跳转到登录页面
-      next({
-        name: 'Login',
-        query: { redirect: to.fullPath }
-      })
+      next({ name: 'Login', query: { redirect: to.fullPath } })
     } else {
       // 用户已登录继续加载页面
       next()
+    }
+  } else if (to.matched.some(record => record.meta.requiresGuest)) {
+    if (loggedIn) {
+      next({ name: 'Home' })
     }
   } else {
     next()
