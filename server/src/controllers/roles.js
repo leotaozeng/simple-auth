@@ -1,11 +1,11 @@
 exports.getUserContent = (req, res) => {
-  res.status(200).send('User Content.')
+  res.status(200).send(`Current User ID: ${req.userId}`)
 }
 
 exports.getModeratorContent = (req, res) => {
-  res.status(200).send('Admin Content.')
+  res.status(200).send(`Current Moderator ID. ${req.userId}`)
 }
 
 exports.getAdminContent = (req, res) => {
-  res.status(200).send('Moderator Content.')
+  res.status(200).send(`Current Admin ID. ${req.userId}`)
 }

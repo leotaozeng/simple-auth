@@ -92,17 +92,11 @@ router.beforeEach((to, from, next) => {
   const loggedIn = store.getters['auth/loggedIn']
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!loggedIn) {
-      // 用户未登录跳转到登录页面
-      next({ name: 'Login', query: { redirect: to.fullPath } })
-    } else {
-      // 用户已登录继续加载页面
-      next()
-    }
+    !loggedIn
+      ? next({ name: 'Login', query: { redirect: to.fullPath } })
+      : next()
   } else if (to.matched.some(record => record.meta.requiresGuest)) {
-    if (loggedIn) {
-      next({ name: 'Home' })
-    }
+    loggedIn ? next({ name: 'Home' }) : next()
   } else {
     next()
   }

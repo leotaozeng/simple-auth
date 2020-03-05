@@ -5,11 +5,21 @@
 </template>
 
 <script>
+import roles from '@/api/roles'
+
 export default {
   name: 'User',
   data() {
     return {
-      content: 'User'
+      content: ''
+    }
+  },
+  async created() {
+    try {
+      const res = await roles.getUserContent()
+      this.content = res.data
+    } catch (error) {
+      console.log(error)
     }
   }
 }

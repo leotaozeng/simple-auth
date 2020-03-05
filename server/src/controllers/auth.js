@@ -33,10 +33,11 @@ exports.register = async (req, res) => {
     const hashedPassword = await hashPassword(data.password)
 
     const user = new User({ ...data, password: hashedPassword })
-    const accessToken = jwt.sign({ userId: user._id }, SECRET, {
-      // 7天后过期
-      expiresIn: '7d'
-    })
+    const accessToken = jwt.sign(
+      { userId: user._id, role: user.role },
+      SECRET,
+      { expiresIn: '7d' }
+    )
 
     await validateUsername(data.username)
     await validateEmail(data.email)
@@ -81,10 +82,11 @@ exports.login = async (req, res) => {
       } else {
         // 密码正确
 
-        const accessToken = jwt.sign({ userId: user._id }, SECRET, {
-          // 7天后过期
-          expiresIn: '7d'
-        })
+        const accessToken = jwt.sign(
+          { userId: user._id, role: user.role },
+          SECRET,
+          { expiresIn: '7d' }
+        )
 
         res.status(200).json({
           role: user.role,
