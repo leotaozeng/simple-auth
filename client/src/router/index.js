@@ -22,63 +22,50 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { title: 'Home page' }
   },
   {
     path: '/login',
     name: 'Login',
     component: Login,
-    meta: {
-      requiresGuest: true
-    }
+    meta: { title: 'Login page', requiresGuest: true }
   },
   {
     path: '/register',
     name: 'Register',
     component: Register,
-    meta: {
-      requiresGuest: true
-    }
+    meta: { title: 'Register page', requiresGuest: true }
   },
   {
     path: '/secure',
     name: 'Secure',
     component: Secure,
-    meta: {
-      requiresAuth: true
-    }
+    meta: { title: 'Secure page', requiresAuth: true }
   },
   {
     path: '/user',
     name: 'User',
     component: User,
-    meta: {
-      requiresAuth: true
-    }
+    meta: { title: 'User page', requiresAuth: true }
   },
   {
     path: '/admin',
     name: 'Admin',
     component: Admin,
-    meta: {
-      requiresAuth: true
-    }
+    meta: { title: 'Admin page', requiresAuth: true }
   },
   {
     path: '/mod',
     name: 'Moderator',
     component: Moderator,
-    meta: {
-      requiresAuth: true
-    }
+    meta: { title: 'Moderator page', requiresAuth: true }
   },
   {
     path: '/:username',
     name: 'Profile',
     component: Profile,
-    meta: {
-      requiresAuth: true
-    }
+    meta: { title: 'Profile page', requiresAuth: true }
   }
 ]
 
@@ -90,6 +77,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const loggedIn = store.getters['auth/loggedIn']
+
+  document.title = to.meta.title
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     !loggedIn

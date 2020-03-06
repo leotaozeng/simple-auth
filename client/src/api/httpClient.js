@@ -1,5 +1,4 @@
 import axios from 'axios'
-import store from '@/store'
 
 const httpClient = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL
@@ -18,11 +17,9 @@ const authInterceptor = config => {
 // Add a request interceptor
 httpClient.interceptors.request.use(
   config => {
-    store.commit('loader/START_LOADING')
     return authInterceptor(config)
   },
   error => {
-    store.commit('loader/FINISH_LOADING')
     return Promise.reject(error)
   }
 )
@@ -30,11 +27,9 @@ httpClient.interceptors.request.use(
 // Add a response interceptor
 httpClient.interceptors.response.use(
   response => {
-    store.commit('loader/FINISH_LOADING')
     return response
   },
   error => {
-    store.commit('loader/FINISH_LOADING')
     return Promise.reject(error)
   }
 )
