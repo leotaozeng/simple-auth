@@ -19,7 +19,7 @@ export default {
       const res = await roles.getAdminContent()
       this.content = res.data
     } catch (error) {
-      this.$router.push({ name: 'Home' })
+      console.log(error.response)
     }
   }
 }

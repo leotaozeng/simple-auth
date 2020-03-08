@@ -4,20 +4,10 @@ const httpClient = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL
 })
 
-const user = JSON.parse(localStorage.getItem('user'))
-
-const authInterceptor = config => {
-  if (user) {
-    config.headers['Authorization'] = user.accessToken
-  }
-
-  return config
-}
-
 // Add a request interceptor
 httpClient.interceptors.request.use(
   config => {
-    return authInterceptor(config)
+    return config
   },
   error => {
     return Promise.reject(error)

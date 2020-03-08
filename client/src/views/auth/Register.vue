@@ -88,8 +88,8 @@ export default {
         setTimeout(() => {
           this.$router.push({ name: 'Home' })
         }, 1000)
-      } catch (err) {
-        console.log(err.response)
+      } catch (error) {
+        console.log(error.response)
       }
     }
   }
