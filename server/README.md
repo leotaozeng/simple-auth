@@ -1,1 +1,13 @@
-# auth-app
+# auth-app-backend
+
+## Project setup
+
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+
+```
+npm run server
+```
