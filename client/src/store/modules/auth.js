@@ -27,10 +27,10 @@ const actions = {
 
           // 状态码是否等于 200
           if (status === SUCCESS_OK) {
-            commit('AUTH_SUCCESS', data)
+            commit('AUTH_SUCCESS', data.user)
 
             // 存储用户信息
-            localStorage.setItem('user', JSON.stringify(data))
+            localStorage.setItem('user', JSON.stringify(data.user))
 
             resolve(res)
           }
@@ -48,10 +48,10 @@ const actions = {
 
           // 状态码是否等于 200
           if (status === SUCCESS_OK) {
-            commit('AUTH_SUCCESS', data)
+            commit('AUTH_SUCCESS', data.user)
 
             // 存储用户信息
-            localStorage.setItem('user', JSON.stringify(data))
+            localStorage.setItem('user', JSON.stringify(data.user))
 
             resolve(res)
           }

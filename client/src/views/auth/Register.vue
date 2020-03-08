@@ -8,14 +8,14 @@
     />
 
     <!-- Form -->
-    <form autocomplete="off" @submit.prevent="handleRegister">
+    <form v-if="!message" autocomplete="off" @submit.prevent="handleRegister">
       <!-- Username -->
       <div class="form-group">
         <label for="username">Username</label>
         <input
           id="username"
           type="text"
-          v-model="form.username"
+          v-model.trim="form.username"
           class="form-control"
         />
       </div>
@@ -26,7 +26,7 @@
         <input
           id="email"
           type="email"
-          v-model="form.email"
+          v-model.trim="form.email"
           class="form-control"
         />
       </div>
@@ -37,7 +37,7 @@
         <input
           id="password"
           type="password"
-          v-model="form.password"
+          v-model.trim="form.password"
           class="form-control"
         />
       </div>
@@ -47,6 +47,16 @@
         <button class="btn btn-primary btn-block">Create</button>
       </div>
     </form>
+
+    <!-- Alert Message -->
+    <div
+      v-else
+      class="alert"
+      :class="successful ? 'alert-success' : 'alert-danger'"
+      role="alert"
+    >
+      {{ message }}
+    </div>
   </div>
 </template>
 
@@ -61,15 +71,23 @@ export default {
         username: '',
         email: '',
         password: ''
-      }
+      },
+      message: '',
+      successful: false
     }
   },
   methods: {
     ...mapActions('auth', ['register']),
     async handleRegister() {
       try {
-        await this.register(this.form)
-        this.$router.push({ name: 'Home' })
+        const res = await this.register(this.form)
+
+        this.message = res.data.message
+        this.successful = true
+
+        setTimeout(() => {
+          this.$router.push({ name: 'Home' })
+        }, 1000)
       } catch (err) {
         console.log(err.response)
       }

@@ -8,7 +8,7 @@
     />
 
     <!-- Form -->
-    <form autocomplete="off" @submit.prevent="handleLogin">
+    <form v-if="!message" autocomplete="off" @submit.prevent="handleLogin">
       <!-- Email -->
       <div class="form-group">
         <label for="email">Email</label>
@@ -35,13 +35,17 @@
       <div class="form-group">
         <button class="btn btn-primary btn-block">Login</button>
       </div>
-
-      <div class="form-group">
-        <div v-if="message" class="alert alert-danger" role="alert">
-          {{ message }}
-        </div>
-      </div>
     </form>
+
+    <!-- Alert Message -->
+    <div
+      v-else
+      class="alert"
+      :class="successful ? 'alert-success' : 'alert-danger'"
+      role="alert"
+    >
+      {{ message }}
+    </div>
   </div>
 </template>
 
@@ -56,17 +60,26 @@ export default {
         email: '',
         password: ''
       },
-      message: ''
+      message: '',
+      successful: false
     }
   },
   methods: {
     ...mapActions('auth', ['login']),
     async handleLogin() {
       try {
-        await this.login(this.form)
-        this.$router.push({ name: 'Home' })
+        const res = await this.login(this.form)
+
+        this.message = res.data.message
+        this.successful = true
+
+        setTimeout(() => {
+          this.$router.push({ name: 'Home' })
+        }, 1500)
       } catch (err) {
-        console.log(err)
+        const res = err.response
+
+        this.message = res.data.message
       }
     }
   }

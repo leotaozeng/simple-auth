@@ -32,11 +32,15 @@ exports.register = async (req, res) => {
     await user.save()
 
     res.status(200).json({
-      role: user.role,
-      username: data.username,
-      email: data.email,
-      accessToken,
-      expiresIn: 168
+      user: {
+        id: user._id,
+        role: user.role,
+        username: data.username,
+        email: data.email,
+        accessToken,
+        expiresIn: 168
+      },
+      message: 'User registered successfully!'
     })
   } catch (error) {
     res.status(400).json({
@@ -77,11 +81,15 @@ exports.login = async (req, res) => {
         )
 
         res.status(200).json({
-          role: user.role,
-          username: user.username,
-          email,
-          accessToken,
-          expiresIn: 168
+          user: {
+            id: user._id,
+            role: user.role,
+            username: user.username,
+            email,
+            accessToken,
+            expiresIn: 168
+          },
+          message: 'User logged in successfully!'
         })
       }
     }
