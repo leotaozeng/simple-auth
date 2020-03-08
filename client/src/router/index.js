@@ -9,8 +9,12 @@ import Profile from '@/views/Profile'
 import User from '@/views/roles/User'
 import Admin from '@/views/roles/Admin'
 import Moderator from '@/views/roles/Moderator'
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css' // progress bar style
 
 Vue.use(VueRouter)
+
+NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const routes = [
   {
@@ -78,17 +82,27 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const loggedIn = store.getters['auth/loggedIn']
 
+  // shows the progress bar
+  NProgress.start()
   document.title = to.meta.title
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     !loggedIn
-      ? next({ name: 'Login', query: { redirect: to.fullPath } })
+      ? next({
+          name: 'Login',
+          query: { redirect: to.fullPath }
+        })
       : next()
   } else if (to.matched.some(record => record.meta.requiresGuest)) {
     loggedIn ? next({ name: 'Home' }) : next()
   } else {
     next()
   }
+})
+
+router.afterEach(() => {
+  // finish progress bar
+  NProgress.done()
 })
 
 export default router
