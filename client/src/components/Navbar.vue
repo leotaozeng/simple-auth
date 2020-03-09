@@ -81,7 +81,7 @@
           :to="{ name: 'Register' }"
           class="nav-link d-flex align-items-center"
         >
-          <user-plus-icon size="18" class="mr-1"></user-plus-icon>
+          <user-plus-icon size="18" class="mr-1 icon-register"></user-plus-icon>
           <span>Register</span>
         </router-link>
       </li>
@@ -149,3 +149,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.icon-register {
+  fill: rgba(255, 255, 255, 0.5);
+}
+</style>
