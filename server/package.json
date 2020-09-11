@@ -1,5 +1,5 @@
 {
-  "name": "auth-app-backend",
+  "name": "server",
   "version": "1.0.0",
   "description": "a full stack Node.js Express + Vue.js Authentication example",
   "main": "app.js",
